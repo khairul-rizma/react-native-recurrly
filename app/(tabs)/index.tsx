@@ -11,8 +11,8 @@ export default function App() {
             <ScrollView contentContainerClassName="flex-grow justify-center items-center px-6 py-4">
 
                 {/* Header Section */}
-                <View className="items-center mb-10 mt-4">
-                    <Text className="text-5xl font-black text-indigo-600 mb-3 tracking-tighter">
+                <View className="items-center mb-10 mt-5">
+                    <Text className="text-6xl font-black text-indigo-600 mb-3 ">
                         Recurrly
                     </Text>
                     <Text className="text-base text-slate-500 text-center px-4 leading-relaxed">
