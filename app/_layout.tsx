@@ -1,7 +1,8 @@
-import {SplashScreen, Stack} from "expo-router";
+import { SplashScreen, Stack } from "expo-router";
 import "@/global.css"
-import {useFonts} from "expo-font";
-import {useEffect} from "react";
+import { useFonts } from "expo-font";
+import { useEffect } from "react";
+import { SubscriptionsProvider } from "@/context/SubscriptionsContext";
 
 export default function RootLayout() {
   const [fontsLoaded] = useFonts({
@@ -23,5 +24,10 @@ export default function RootLayout() {
     return null;
   }
 
-  return <Stack screenOptions={{ headerShown : false}} />;
+  // Look how clean this is! Expo will automatically find (auth), (tabs), and onboarding.
+  return (
+      <SubscriptionsProvider>
+        <Stack screenOptions={{ headerShown: false }} />
+      </SubscriptionsProvider>
+  );
 }
