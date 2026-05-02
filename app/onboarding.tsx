@@ -1,7 +1,7 @@
 import { View, Text, Image, Pressable, StatusBar } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Link } from "expo-router"; // Import Link instead of router
+import { Link } from "expo-router"; // Using Link just like in your dev hub!
 
 const Onboarding = () => {
     return (
@@ -24,7 +24,7 @@ const Onboarding = () => {
                     Track, analyze and cancel with ease
                 </Text>
 
-                {/* Wrap your button in a Link to safely navigate to the (auth) group */}
+                {/* USING YOUR EXACT LOGIC FROM THE DEV HUB! */}
                 <Link href="/(auth)/sign-in" asChild>
                     <Pressable className="w-full bg-white py-4 rounded-full items-center shadow-sm active:opacity-80">
                         <Text className="text-[#081126] font-bold text-lg">
@@ -32,6 +32,7 @@ const Onboarding = () => {
                         </Text>
                     </Pressable>
                 </Link>
+
             </SafeAreaView>
         </View>
     );
