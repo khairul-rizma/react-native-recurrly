@@ -1,33 +1,42 @@
-import { SplashScreen, Stack } from "expo-router";
-import "@/global.css"
-import { useFonts } from "expo-font";
-import { useEffect } from "react";
+import { Stack, router, useSegments } from "expo-router";
+import { AuthProvider, useAuth } from "@/context/AuthContext";
 import { SubscriptionsProvider } from "@/context/SubscriptionsContext";
+import { useEffect } from "react";
 
-export default function RootLayout() {
-  const [fontsLoaded] = useFonts({
-    'sans-regular': require('../assets/fonts/PlusJakartaSans-Regular.ttf'),
-    'sans-semibold': require('../assets/fonts/PlusJakartaSans-SemiBold.ttf'),
-    'sans-light': require('../assets/fonts/PlusJakartaSans-Light.ttf'),
-    'sans-bold': require('../assets/fonts/PlusJakartaSans-Bold.ttf'),
-    'sans-medium': require('../assets/fonts/PlusJakartaSans-Medium.ttf'),
-    'sans-extrabold': require('../assets/fonts/PlusJakartaSans-ExtraBold.ttf'),
-  })
+function RootLayoutNav() {
+  const { isAuthenticated, isLoading } = useAuth();
+  const segments = useSegments();
 
   useEffect(() => {
-    if (fontsLoaded) {
-      SplashScreen.hideAsync();
+    if (isLoading) return;
+
+    // Check if the user is currently in the (auth) group
+    const inAuthGroup = segments[0] === "(auth)" || segments[0] === "onboarding";
+
+    if (!isAuthenticated && !inAuthGroup) {
+      // If not logged in and not in auth screens, redirect to onboarding
+      router.replace("/onboarding");
+    } else if (isAuthenticated && inAuthGroup) {
+      // If logged in and trying to access auth screens, redirect to home
+      router.replace("/(tabs)");
     }
-  }, [fontsLoaded])
+  }, [isAuthenticated, isLoading, segments]);
 
-  if (!fontsLoaded) {
-    return null;
-  }
-
-  // Look how clean this is! Expo will automatically find (auth), (tabs), and onboarding.
   return (
-      <SubscriptionsProvider>
-        <Stack screenOptions={{ headerShown: false }} />
-      </SubscriptionsProvider>
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="index" />
+        <Stack.Screen name="(auth)" />
+        <Stack.Screen name="(tabs)" />
+      </Stack>
+  );
+}
+
+export default function RootLayout() {
+  return (
+      <AuthProvider>
+        <SubscriptionsProvider>
+          <RootLayoutNav />
+        </SubscriptionsProvider>
+      </AuthProvider>
   );
 }
